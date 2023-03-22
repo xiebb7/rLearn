@@ -90,9 +90,9 @@ GetHCC = function(traindata,
 
     if(nrow(marker_data) == 0){next}
 
-    threthold = max(colMeans(marker_data)) * t1
+    threthold = max(colSums(marker_data)/nrow(marker_data)) * t1
 
-    filter_cell = names(which(colMeans(marker_data) > threthold))
+    filter_cell = names(which(colSums(marker_data)/nrow(marker_data) > threthold))
 
     if(length(filter_cell) <= 2){next}
 
