@@ -92,13 +92,14 @@ GetHCC = function(traindata,
 
     threthold = max(colMeans(marker_data)) * t1
 
-    filter_data = traindata[, which(colMeans(marker_data) > threthold), drop=F]
+    filter_cell = names(which(colMeans(marker_data) > threthold))
 
-    if(ncol(filter_data) <= 2){next}
+    if(length(filter_cell) <= 2){next}
 
-    allmarkerdata = traindata[which(rownames(traindata) %in% unlist(markerfile)), colnames(filter_data)]
+    allmarkerdata = traindata[which(rownames(traindata) %in% unlist(markerfile)), filter_cell]
 
     allmarkermatrix = markerconvert(markerfile)
+
     allmarkermatrix = allmarkermatrix[rownames(allmarkerdata),]
 
     cor_data = apply(allmarkerdata, 2, function(y){
@@ -283,5 +284,47 @@ Unlabeled = function(F,
   return(F_unlabel)
 
 }
+
+#' Evaluate the accurate of hcc.
+#'
+#' @param hcc A vector of high confidence cells.
+#' @param markerfile A list contains the marker gene of each cell type.
+#' @param truelabel A vector of true cell type.
+#'
+#' @return A vector of accuracy of each cell type.
+#'
+#' @export
+#'
+#'
+hcc_accuracy_estimate = function(hcc,
+                                 markerfile,
+                                 truelabel){
+  acc = c()
+  for(i in 1:length(markerfile)){
+    acc = c(acc, sum(truelabel[which(hcc==i)] == names(markerfile)[i])/length(which(hcc==i)))
+  }
+  return(acc)
+}
+
+#' load R object and assign new name.
+#'
+#' @param fileName File path of RData.
+#'
+#' @return R object.
+#'
+#' @export
+#'
+loadRData = function(fileName){
+
+  load(fileName)
+  get(ls()[ls() != "fileName"])
+
+}
+
+
+
+
+
+
 
 
