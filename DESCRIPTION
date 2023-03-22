@@ -1,0 +1,15 @@
+Package: rLearn
+Type: Package
+Title: Automatic cell type identification for scATAC-seq data
+Version: 1.0
+Author: Bingbing xie
+Maintainer: Bingbing Xie <xie_bingbing@gzlab.ac.cn>
+Description: Automatic cell type identification for scATAC-seq data through marker region or cis-regulator
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Depends: R(>= 3.5.0)
+Imports:
+  Seurat, outliers, parallelDist
+Collate: 'rLearn.R'
+RoxygenNote: 7.2.0
