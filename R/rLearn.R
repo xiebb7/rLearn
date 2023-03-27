@@ -90,7 +90,8 @@ GetHCC = function(traindata,
 
     if(nrow(marker_data) == 0){next}
 
-    threthold = max(colMeans(marker_data)) * t1
+    # threthold = max(colMeans(marker_data)) * t1
+    threthold = quantile(0:max(colMeans(marker_data)),t1)
 
     filter_cell = names(which(colMeans(marker_data) > threthold))
 
