@@ -69,8 +69,9 @@ ReadMarker = function(con,
 #' @param markerfile A list contains the marker gene of each cell type.
 #' @param t1 The marker gene expression threshold to determine high confidence cells, default 0.5.
 #' @param t2 The correlation threshold to determine high confidence cells, default 0.8.
+#' @param cor_method Method to calculate correlation, eg. proxyC and base. Default: proxyC.
 #'
-#' @importFrom outliers dixon.test
+#' @importFrom outliers dixon.test proxyC
 #'
 #' @return A vector of high confidence cells.
 #'
@@ -80,7 +81,8 @@ ReadMarker = function(con,
 GetHCC = function(traindata,
                   markerfile,
                   t1,
-                  t2){
+                  t2,
+                  method = 'proxyC'){
 
   HCC = rep(0, ncol(traindata))
 
@@ -91,7 +93,7 @@ GetHCC = function(traindata,
     if(nrow(marker_data) == 0){next}
 
     # threthold = max(colMeans(marker_data)) * t1
-    threthold = quantile(0:max(colMeans(marker_data)),t1)
+    threthold = quantile(colMeans(marker_data),t1)
 
     filter_cell = names(which(colMeans(marker_data) > threthold))
 
@@ -103,9 +105,20 @@ GetHCC = function(traindata,
 
     allmarkermatrix = allmarkermatrix[rownames(allmarkerdata),]
 
-    cor_data = apply(allmarkerdata, 2, function(y){
-      apply(allmarkermatrix, 2, function(x) cor(x,y))
-    })
+    if(method == 'proxyC'){
+
+      cor_data = simil(t(as.matrix(allmarkermatrix)),
+                       t(as.matrix(allmarkerdata)),
+                       method = "cosine",
+                       drop0=TRUE)
+
+    }else{
+
+      cor_data = apply(allmarkerdata, 2, function(y){
+        apply(allmarkermatrix, 2, function(x) cor(x,y))
+      })
+
+    }
 
     celltype_max = apply(cor_data,2, which.max)
 

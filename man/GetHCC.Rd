@@ -4,7 +4,7 @@
 \alias{GetHCC}
 \title{Get high confidence cells.}
 \usage{
-GetHCC(traindata, markerfile, t1, t2)
+GetHCC(traindata, markerfile, t1, t2, method = "proxyC")
 }
 \arguments{
 \item{traindata}{The scaled data of scRNA-seq.}
@@ -14,6 +14,8 @@ GetHCC(traindata, markerfile, t1, t2)
 \item{t1}{The marker gene expression threshold to determine high confidence cells, default 0.5.}
 
 \item{t2}{The correlation threshold to determine high confidence cells, default 0.8.}
+
+\item{cor_method}{Method to calculate correlation, eg. proxyC and base. Default: proxyC.}
 }
 \value{
 A vector of high confidence cells.
