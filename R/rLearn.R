@@ -71,7 +71,7 @@ ReadMarker = function(con,
 #' @param t2 The correlation threshold to determine high confidence cells, default 0.8.
 #' @param cor_method Method to calculate correlation, eg. proxyC and base. Default: proxyC.
 #'
-#' @importFrom outliers dixon.test proxyC
+#' @import outliers proxyC
 #'
 #' @return A vector of high confidence cells.
 #'
